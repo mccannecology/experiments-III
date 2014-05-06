@@ -11,7 +11,10 @@ data <- read.csv("stoichiometry.csv") # import area data
 head(data)
 
 # add a new variable that combines plate, row, and column to use as an ID 
-data$id <- paste(data$plate,data$roaw,data$col,sep="")
+data$id <- paste(data$plate,data$row,data$col,sep="")
+
+class(data$nitrogen)
+class(data$phosphorus)
 
 ############################# 
 # reshape data              #
@@ -21,7 +24,7 @@ data$id <- paste(data$plate,data$roaw,data$col,sep="")
 #############################
 # new variable headings be day and area 
 data_area <- reshape(data, 
-                     idvar="id",
+                     idvar = "id",
                      varying = c("area0","area3","area7","area10","area14","area17"),
                      times = c(0,3,7,10,14,17),
                      timevar = "day",
@@ -40,6 +43,12 @@ data_area$rgr15.5 <- NULL
 data_area$minRGR <- NULL
 data_area$maxRGR <- NULL
 data_area$avgRGR <- NULL
+data_area$nitrogen1 <- NULL
+data_area$phosphorus1 <- NULL
+
+# re-order my treatments so they go from low to high
+data_area$nitrogen <- factor(data_area$nitrogen , levels=c("lowN","medN","highN"))
+data_area$phosphorus <- factor(data_area$phosphorus , levels=c("lowP","medP","highP"))
 
 # check it out 
 head(data_area)
@@ -72,12 +81,19 @@ data_rgr$area17 <- NULL
 data_rgr$maxRGR <- NULL
 data_rgr$minRGR <- NULL
 data_rgr$avgRGR <- NULL
+data_rgr$nitrogen1 <- NULL
+data_rgr$phosphorus1 <- NULL
+
+# re-order my treatments so they go from low to high
+data_rgr$nitrogen <- factor(data_rgr$nitrogen , levels=c("lowN","medN","highN"))
+data_rgr$phosphorus <- factor(data_rgr$phosphorus , levels=c("lowP","medP","highP"))
 
 # check it out 
 head(data_rgr)
 
 #######################
 # Mean area           #
+# through time        # 
 # by treatment combo  #
 # Use for plotting    #
 #######################
@@ -89,6 +105,9 @@ summary_data_area <- ddply(data_area, c("species","nitrogen","phosphorus","day")
                            sd = sd(area,na.rm=T),
                            se = sd / sqrt(N) )
 colnames(summary_data_area)[6] <- "area"
+# re-order my treatments so they go from low to high
+summary_data_area$nitrogen <- factor(summary_data_area$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_area$phosphorus <- factor(summary_data_area$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_area)
 
 #######################
@@ -119,6 +138,9 @@ summary_data_maxRGR <- ddply(data, c("species","nitrogen","phosphorus"),
                               sd = sd(maxRGR),
                               se = sd / sqrt(N) )
 colnames(summary_data_maxRGR)[5] <- "maxRGR"
+# re-order my treatments so they go from low to high
+summary_data_maxRGR$nitrogen <- factor(summary_data_maxRGR$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_maxRGR$phosphorus <- factor(summary_data_maxRGR$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_maxRGR)
 
 #######################
@@ -134,5 +156,8 @@ summary_data_avgRGR <- ddply(data, c("species","nitrogen","phosphorus"),
                              sd = sd(avgRGR),
                              se = sd / sqrt(N) )
 colnames(summary_data_avgRGR)[5] <- "avgRGR"
+# re-order my treatments so they go from low to high
+summary_data_avgRGR$nitrogen <- factor(summary_data_avgRGR$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_avgRGR$phosphorus <- factor(summary_data_avgRGR$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_avgRGR)
 
