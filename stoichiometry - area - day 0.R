@@ -31,6 +31,7 @@ mean_area_day0_plot
 
 #####################
 # Preliminary anova #
+# Three-way         #
 #####################
 # Y = Area day 0
 # Treatments: species, nitrogen, phosphorus       
@@ -61,12 +62,28 @@ area_day0_LL_anova <- aov(area ~ species, data=subset(data_area, data_area$day =
 summary(area_day0_LL_anova)
 TukeyHSD(area_day0_LL_anova)
 
+hist(resid(area_day0_LL_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_LL_anova)) # QQ plot 
+qqline(resid(area_day0_LL_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_LL_anova)) # p-value =  0.5395
+
 ###############
 # Med N Low P #
 ###############
 area_day0_ML_anova <- aov(area ~ species, data=subset(data_area, data_area$day == 0 & data_area$nitrogen=="medN" & data_area$phosphorus=="lowP"))
 summary(area_day0_ML_anova)
 TukeyHSD(area_day0_ML_anova)
+
+hist(resid(area_day0_ML_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_ML_anova)) # QQ plot 
+qqline(resid(area_day0_ML_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_ML_anova)) # p-value =  0.113
 
 ################
 # High N Low P #
@@ -75,12 +92,28 @@ area_day0_HL_anova <- aov(area ~ species, data=subset(data_area, data_area$day =
 summary(area_day0_HL_anova)
 TukeyHSD(area_day0_HL_anova)
 
+hist(resid(area_day0_HL_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_HL_anova)) # QQ plot 
+qqline(resid(area_day0_HL_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_HL_anova)) # p-value =  0.7045
+
 ###############
 # Low N Med P #
 ###############
 area_day0_LM_anova <- aov(area ~ species, data=subset(data_area, data_area$day == 0 & data_area$nitrogen=="lowN" & data_area$phosphorus=="medP"))
 summary(area_day0_LM_anova)
 TukeyHSD(area_day0_LM_anova)
+
+hist(resid(area_day0_LM_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_LM_anova)) # QQ plot 
+qqline(resid(area_day0_LM_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_LM_anova)) # p-value =  0.9392
 
 ################
 # Low N High P #
@@ -89,12 +122,28 @@ area_day0_LH_anova <- aov(area ~ species, data=subset(data_area, data_area$day =
 summary(area_day0_LH_anova)
 TukeyHSD(area_day0_LH_anova)
 
+hist(resid(area_day0_LH_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_LH_anova)) # QQ plot 
+qqline(resid(area_day0_LH_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_LH_anova)) # p-value =  0.1905
+
 ###############
 # Med N Med P #
 ###############
 area_day0_MM_anova <- aov(area ~ species, data=subset(data_area, data_area$day == 0 & data_area$nitrogen=="medN" & data_area$phosphorus=="medP"))
 summary(area_day0_MM_anova)
 TukeyHSD(area_day0_MM_anova)
+
+hist(resid(area_day0_MM_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_MM_anova)) # QQ plot 
+qqline(resid(area_day0_MM_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_MM_anova)) # p-value =  0.3392
 
 #################
 # High N High P #
@@ -103,6 +152,14 @@ area_day0_HH_anova <- aov(area ~ species, data=subset(data_area, data_area$day =
 summary(area_day0_HH_anova)
 TukeyHSD(area_day0_HH_anova)
 
+hist(resid(area_day0_HH_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_HH_anova)) # QQ plot 
+qqline(resid(area_day0_HH_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_HH_anova)) # p-value =  0.7958
+
 ################
 # Med N High P #
 ################
@@ -110,10 +167,26 @@ area_day0_MH_anova <- aov(area ~ species, data=subset(data_area, data_area$day =
 summary(area_day0_MH_anova)
 TukeyHSD(area_day0_MH_anova)
 
+hist(resid(area_day0_MH_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_MH_anova)) # QQ plot 
+qqline(resid(area_day0_MH_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_MH_anova)) # p-value =  0.6496
+
 ################
 # High N Med P #
 ################
 area_day0_HM_anova <- aov(area ~ species, data=subset(data_area, data_area$day == 0 & data_area$nitrogen=="highN" & data_area$phosphorus=="medP"))
 summary(area_day0_HM_anova)
 TukeyHSD(area_day0_HM_anova)
+
+hist(resid(area_day0_HM_anova)) # plot a histogram 
+
+qqnorm(resid(area_day0_HM_anova)) # QQ plot 
+qqline(resid(area_day0_HM_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(area_day0_HM_anova)) # p-value =  0.4338
 

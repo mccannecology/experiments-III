@@ -13,6 +13,10 @@ head(data)
 # add a new variable that combines plate, row, and column to use as an ID 
 data$id <- paste(data$plate,data$row,data$col,sep="")
 
+# add new variables for difference in area 
+data$final_minus_initial <- data$area17-data$area0
+data$final_divide_initial <- data$area17/data$area0
+
 class(data$nitrogen)
 class(data$phosphorus)
 
@@ -109,6 +113,47 @@ colnames(summary_data_area)[6] <- "area"
 summary_data_area$nitrogen <- factor(summary_data_area$nitrogen , levels=c("lowN","medN","highN"))
 summary_data_area$phosphorus <- factor(summary_data_area$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_area)
+
+
+###########################
+# Mean final-initial area #
+# by treatment combo      #
+# Use for plotting        #
+###########################
+# Area
+summary_data_area_final_minus_initial <- ddply(data, 
+                           c("species","nitrogen","phosphorus"), 
+                           summarise, 
+                           N = sum(!is.na(final_minus_initial)),
+                           mean = mean(final_minus_initial,na.rm=T),
+                           sd = sd(final_minus_initial,na.rm=T),
+                           se = sd / sqrt(N) )
+colnames(summary_data_area_final_minus_initial)[5] <- "final_minus_initial"
+# re-order my treatments so they go from low to high
+summary_data_area_final_minus_initial$nitrogen <- factor(summary_data_area_final_minus_initial$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_area_final_minus_initial$phosphorus <- factor(summary_data_area_final_minus_initial$phosphorus , levels=c("lowP","medP","highP"))
+head(summary_data_area_final_minus_initial)
+
+
+###########################
+# Mean final/initial area #
+# by treatment combo      #
+# Use for plotting        #
+###########################
+# Area
+summary_data_area_final_divide_initial <- ddply(data, 
+                                               c("species","nitrogen","phosphorus"), 
+                                               summarise, 
+                                               N = sum(!is.na(final_divide_initial)),
+                                               mean = mean(final_divide_initial,na.rm=T),
+                                               sd = sd(final_divide_initial,na.rm=T),
+                                               se = sd / sqrt(N) )
+colnames(summary_data_area_final_divide_initial)[5] <- "final_divide_initial"
+# re-order my treatments so they go from low to high
+summary_data_area_final_divide_initial$nitrogen <- factor(summary_data_area_final_divide_initial$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_area_final_divide_initial$phosphorus <- factor(summary_data_area_final_divide_initial$phosphorus , levels=c("lowP","medP","highP"))
+head(summary_data_area_final_divide_initial)
+
 
 #######################
 # Mean rgr by day     #
