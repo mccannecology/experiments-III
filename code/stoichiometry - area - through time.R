@@ -20,7 +20,11 @@ raw_area_0to17_plot <- ggplot(data_area, aes(x=day,y=area,group=id,colour=specie
 raw_area_0to17_plot <- raw_area_0to17_plot + facet_grid(nitrogen ~ phosphorus)
 raw_area_0to17_plot <- raw_area_0to17_plot + scale_x_discrete(breaks=c(0,3,7,10,14,17),labels=c(0,3,7,10,14,17))
 raw_area_0to17_plot <- raw_area_0to17_plot + ylab("area (sq. mm)")
+raw_area_0to17_plot <- raw_area_0to17_plot + theme_gray(base_size=18)
 raw_area_0to17_plot 
+
+ggsave(filename = "raw_area_0to17_plot.pdf", raw_area_0to17_plot, height=11, width=8)
+
 
 ############
 # Average  #
@@ -31,7 +35,22 @@ mean_area_0to17_plot <- mean_area_0to17_plot + geom_errorbar(aes(ymin=area-se, y
 mean_area_0to17_plot <- mean_area_0to17_plot + facet_grid(nitrogen ~ phosphorus)
 mean_area_0to17_plot <- mean_area_0to17_plot + scale_x_discrete(breaks=c(0,3,7,10,14,17),labels=c(0,3,7,10,14,17))
 mean_area_0to17_plot <- mean_area_0to17_plot + ylab("area (sq. mm)")
+mean_area_0to17_plot <- mean_area_0to17_plot + theme_gray(base_size=18)
 mean_area_0to17_plot 
+
+ggsave(filename = "mean_area_0to17_plot.pdf", mean_area_0to17_plot, height=11, width=8)
+
+# black & white 
+mean_area_0to17_plot <- ggplot(summary_data_area, aes(x=day,y=area,shape=species)) + geom_line() + geom_point() 
+mean_area_0to17_plot <- mean_area_0to17_plot + geom_errorbar(aes(ymin=area-se, ymax=area+se), width=0.1)
+mean_area_0to17_plot <- mean_area_0to17_plot + facet_grid(nitrogen ~ phosphorus)
+mean_area_0to17_plot <- mean_area_0to17_plot + scale_x_discrete(breaks=c(0,3,7,10,14,17),labels=c(0,3,7,10,14,17))
+mean_area_0to17_plot <- mean_area_0to17_plot + ylab("area (sq. mm)")
+mean_area_0to17_plot <- mean_area_0to17_plot + theme_gray(base_size=18)
+mean_area_0to17_plot 
+
+ggsave(filename = "mean_area_0to17_plot_bW.pdf", mean_area_0to17_plot, height=11, width=8)
+
 
 #####################
 # Preliminary anova #

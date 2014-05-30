@@ -22,6 +22,7 @@ mean_maxRGR_plot <- ggplot(summary_data_maxRGR, aes(x=species,y=maxRGR)) + geom_
 mean_maxRGR_plot <- mean_maxRGR_plot + geom_errorbar(aes(ymin=maxRGR-se, ymax=maxRGR+se), width=0.1)
 mean_maxRGR_plot <- mean_maxRGR_plot + facet_grid(nitrogen ~ phosphorus)
 mean_maxRGR_plot <- mean_maxRGR_plot + ylab("Maximum RGR")
+mean_maxRGR_plot <- mean_maxRGR_plot + theme_gray(base_size=18)
 mean_maxRGR_plot 
 
 #####################

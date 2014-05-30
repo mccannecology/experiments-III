@@ -22,6 +22,7 @@ mean_avgRGR_plot <- ggplot(summary_data_avgRGR, aes(x=species,y=avgRGR)) + geom_
 mean_avgRGR_plot <- mean_avgRGR_plot + geom_errorbar(aes(ymin=avgRGR-se, ymax=avgRGR+se), width=0.1)
 mean_avgRGR_plot <- mean_avgRGR_plot + facet_grid(nitrogen ~ phosphorus)
 mean_avgRGR_plot <- mean_avgRGR_plot + ylab("Average RGR")
+mean_avgRGR_plot <- mean_avgRGR_plot + theme_gray(base_size=18)
 mean_avgRGR_plot 
 
 #####################
