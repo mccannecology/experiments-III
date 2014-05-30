@@ -56,13 +56,10 @@ qqline(resid(maxRGR_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_anova)) # p-value = 0.0261 # Residuals are not noramlly distributed 
 
-#################################
-# other parameteric assumptions #
-#################################
 # Bartlett Test of Homogeneity of Variances
 # null hypothesis = population variances are equal
-bartlett.test(data$maxRGR ~ data$species * data$nitrogen * data$phosphorus) # p-value = 0.002015
-# 
+bartlett.test(data$maxRGR ~ data$species) # p-value = 0.002015
+
 
 
 #################################
@@ -312,7 +309,31 @@ qqline(resid(maxRGR_LH_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_LH_anova)) # p-value =  0.005253
 
-######### needs a transformation 
+# try a power transformation 
+library(car)
+powerTransform(maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP"))
+power <- 0.2961235 
+
+# add the power transformation
+data$power_maxRGR <- ((data$maxRGR)^power - 1) / power 
+
+power_maxRGR_LH_anova <- aov(power_maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP"))
+summary(power_maxRGR_LH_anova)
+posthoc_power_maxRGR_LH_anova <- TukeyHSD(power_maxRGR_LH_anova)
+posthoc_power_maxRGR_LH_anova
+
+# Examine residuals 
+hist(resid(power_maxRGR_LH_anova)) # plot a histogram 
+
+qqnorm(resid(power_maxRGR_LH_anova)) # QQ plot 
+qqline(resid(power_maxRGR_LH_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(power_maxRGR_LH_anova)) # p-value = 0.07402
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(power_maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP")) # p-value = 0.04142
 
 ###############
 # Med N Med P #
@@ -344,7 +365,31 @@ qqline(resid(maxRGR_HH_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_HH_anova)) # p-value =  0.04204
 
-######### needs a transformation 
+# try a power transformation 
+library(car)
+powerTransform(maxRGR ~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="highP"))
+power <- 1.924551 
+
+# add the power transformation
+data$power_maxRGR <- ((data$maxRGR)^power - 1) / power 
+
+power_maxRGR_HH_anova <- aov(power_maxRGR ~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="highP"))
+summary(power_maxRGR_HH_anova)
+posthoc_power_maxRGR_HH_anova <- TukeyHSD(power_maxRGR_HH_anova)
+posthoc_power_maxRGR_HH_anova
+
+# Examine residuals 
+hist(resid(power_maxRGR_HH_anova)) # plot a histogram 
+
+qqnorm(resid(power_maxRGR_HH_anova)) # QQ plot 
+qqline(resid(power_maxRGR_HH_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(power_maxRGR_HH_anova)) # p-value = 0.2587
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(power_maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP")) # p-value = 0.001893
 
 ################
 # Med N High P #

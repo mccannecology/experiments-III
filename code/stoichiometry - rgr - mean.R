@@ -233,6 +233,48 @@ qqline(resid(logx1_avgRGR_MM_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(logx1_avgRGR_MM_anova)) # p-value =  0.01623
 
+# arcsine sqrt transformation
+asin_avgRGR_MM_anova <- aov(asin(sqrt(avgRGR)) ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP"))
+summary(asin_avgRGR_MM_anova)
+TukeyHSD(asin_avgRGR_MM_anova)
+
+hist(resid(asin_avgRGR_MM_anova)) # plot a histogram 
+
+qqnorm(resid(asin_avgRGR_MM_anova)) # QQ plot 
+qqline(resid(asin_avgRGR_MM_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(asin_avgRGR_MM_anova)) # p-value =  0.02402
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(asin(sqrt(avgRGR)) ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP")) # p-value = 0.3505
+
+# try a power transformation 
+library(car)
+powerTransform(avgRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP"))
+power <- 1.015499 
+
+# add the power transformation
+data$power_avgRGR <- ((data$avgRGR)^power - 1) / power 
+
+power_avgRGR_HH_anova <- aov(power_avgRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP"))
+summary(power_avgRGR_HH_anova)
+posthoc_power_avgRGR_HH_anova <- TukeyHSD(power_avgRGR_HH_anova)
+posthoc_power_avgRGR_HH_anova
+
+# Examine residuals 
+hist(resid(power_avgRGR_HH_anova)) # plot a histogram 
+
+qqnorm(resid(power_avgRGR_HH_anova)) # QQ plot 
+qqline(resid(power_avgRGR_HH_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(power_avgRGR_HH_anova)) # p-value = 0.01607
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(power_avgRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP")) # p-value = 0.7552
 
 #################
 # High N High P #
