@@ -56,6 +56,13 @@ qqline(resid(maxRGR_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_anova)) # p-value = 0.0261 # Residuals are not noramlly distributed 
 
+#################################
+# other parameteric assumptions #
+#################################
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(data$maxRGR ~ data$species * data$nitrogen * data$phosphorus) # p-value = 0.002015
+# 
 
 
 #################################
@@ -86,8 +93,6 @@ qqline(resid(maxRGR_anova_sqrt))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_anova_sqrt)) # p-value = 0.02419 
 
-
-
 #################################
 # transform and re-do the anova #
 #################################
@@ -116,9 +121,6 @@ qqline(resid(maxRGR_anova_logx1))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_anova_logx1)) # p-value = 0.01486 
 
-
-
-
 #################################
 # transform and re-do the anova #
 #################################
@@ -146,8 +148,6 @@ qqline(resid(maxRGR_anova_asinsqrt))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_anova_asinsqrt)) # p-value = 0.01486 
-
-
 
 #################################
 # transform and re-do the anova #
