@@ -210,6 +210,10 @@ qqline(resid(maxRGR_LL_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_LL_anova)) # p-value =  0.4188
 
+# Bartlett's test of homogeneity of variances 
+# null hypothesis: equal variance 
+bartlett.test(maxRGR~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="lowP"))
+
 ###############
 # Med N Low P #
 ###############
@@ -264,6 +268,41 @@ qqline(resid(asinsqrt_maxRGR_ML_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(asinsqrt_maxRGR_ML_anova)) # p-value =  0.03941
 
+# Bartlett's test of homogeneity of variances 
+# null hypothesis: equal variance 
+bartlett.test(asin(sqrt(maxRGR)) ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP"))
+
+# power transformation
+library(car)
+powerTransform(maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP"))
+power <- 0.7094263 
+
+# add the power transformation
+data$power_maxRGR <- ((data$maxRGR)^power - 1) / power 
+
+power_maxRGR_ML_anova <- aov(power_maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP"))
+summary(power_maxRGR_ML_anova)
+posthoc_power_maxRGR_ML_anova <- TukeyHSD(power_maxRGR_ML_anova)
+posthoc_power_maxRGR_ML_anova
+
+# Examine residuals 
+hist(resid(power_maxRGR_ML_anova)) # plot a histogram 
+
+qqnorm(resid(power_maxRGR_ML_anova)) # QQ plot 
+qqline(resid(power_maxRGR_ML_anova)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(power_maxRGR_ML_anova)) # p-value = 0.04574
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(power_maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP")) # 0.01556
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(power_maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP")) # 0.2281
+
 ################
 # High N Low P #
 ################
@@ -279,6 +318,11 @@ qqline(resid(maxRGR_HL_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_HL_anova)) # p-value =  0.426
 
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(maxRGR ~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="lowP"))
+
+
 ###############
 # Low N Med P #
 ###############
@@ -293,6 +337,10 @@ qqline(resid(maxRGR_LM_anova))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_LM_anova)) # p-value =  0.3333
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="medP"))
 
 ################
 # Low N High P #
@@ -335,6 +383,11 @@ shapiro.test(resid(power_maxRGR_LH_anova)) # p-value = 0.07402
 # null hypothesis = population variances are equal
 bartlett.test(power_maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP")) # p-value = 0.04142
 
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(power_maxRGR ~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP")) # 0.2281
+
 ###############
 # Med N Med P #
 ###############
@@ -349,6 +402,10 @@ qqline(resid(maxRGR_MM_anova))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_MM_anova)) # p-value =  0.06162
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP")) # 0.4611
 
 #################
 # High N High P #
@@ -406,6 +463,15 @@ qqline(resid(maxRGR_MH_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_MH_anova)) # p-value =  0.7518
 
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="highP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(maxRGR ~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="highP"))
+
 ################
 # High N Med P #
 ################
@@ -420,3 +486,7 @@ qqline(resid(maxRGR_HM_anova))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(maxRGR_HM_anova)) # p-value =  0.5111
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(maxRGR ~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="medP"))

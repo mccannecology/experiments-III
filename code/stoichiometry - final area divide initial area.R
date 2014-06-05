@@ -120,6 +120,15 @@ qqline(resid(area_final_divide_initialLL_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialLL_anova)) # p-value =  0.7991
 
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(final_divide_initial~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="lowP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(final_divide_initial~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="lowP"))
+
 ###############
 # Med N Low P #
 ###############
@@ -135,6 +144,15 @@ qqline(resid(area_final_divide_initialML_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialML_anova)) # p-value =  0.8382
 
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(final_divide_initial~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(final_divide_initial~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="lowP"))
+
 ################
 # High N Low P #
 ################
@@ -148,7 +166,17 @@ qqnorm(resid(area_final_divide_initialHL_anova)) # QQ plot
 qqline(resid(area_final_divide_initialHL_anova)) 
 
 # null hypothesis = sample came from a normally distributed population 
-shapiro.test(resid(area_final_divide_initialHL_anova)) # p-value =  0.8382
+shapiro.test(resid(area_final_divide_initialHL_anova)) # p-value =  0.7477
+
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(final_divide_initial~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="lowP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(final_divide_initial~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="lowP"))
+
 
 ###############
 # Low N Med P #
@@ -164,6 +192,16 @@ qqline(resid(area_final_divide_initialLM_anova))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialLM_anova)) # p-value =  0.679
+
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(final_divide_initial~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="medP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(final_divide_initial~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="medP"))
+
 
 ################
 # Low N High P #
@@ -193,6 +231,16 @@ qqline(resid(logx1_area_final_divide_initialLH_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(logx1_area_final_divide_initialLH_anova)) # p-value = 0.07561
 
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="lowN" & data$phosphorus=="highP"))
+
+
 ###############
 # Med N Med P #
 ###############
@@ -207,6 +255,15 @@ qqline(resid(area_final_divide_initialMM_anova))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialMM_anova)) # p-value =  0.4819
+
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="medP"))
 
 #################
 # High N High P #
@@ -223,6 +280,15 @@ qqline(resid(area_final_divide_initialHH_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialHH_anova)) # p-value =  0.3709
 
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="highP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="highP"))
+
 ################
 # Med N High P #
 ################
@@ -238,6 +304,15 @@ qqline(resid(area_final_divide_initialMH_anova))
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialMH_anova)) # p-value =  0.8046
 
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="highP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="medN" & data$phosphorus=="highP"))
+
 ################
 # High N Med P #
 ################
@@ -252,3 +327,12 @@ qqline(resid(area_final_divide_initialHM_anova))
 
 # null hypothesis = sample came from a normally distributed population 
 shapiro.test(resid(area_final_divide_initialHM_anova)) # p-value =  0.1918
+
+# bartlett test: homogeneity of variance
+# null hypothesis: equal variance 
+bartlett.test(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="medP"))
+
+# levene's test: homogeneity of variance 
+# null hypothesis: equal variance 
+library(car)
+leveneTest(log(final_divide_initial+1)~ species, data=subset(data, data$nitrogen=="highN" & data$phosphorus=="medP"))
