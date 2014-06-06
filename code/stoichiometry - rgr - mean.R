@@ -242,6 +242,8 @@ avgRGR_MM_anova <- aov(avgRGR ~ species, data=subset(data, data$nitrogen=="medN"
 summary(avgRGR_MM_anova)
 TukeyHSD(avgRGR_MM_anova)
 
+hist(subset(data$avgRGR, data$nitrogen=="medN" & data$phosphorus=="medP"))
+
 hist(resid(avgRGR_MM_anova)) # plot a histogram 
 
 qqnorm(resid(avgRGR_MM_anova)) # QQ plot 

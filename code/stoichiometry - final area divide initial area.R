@@ -24,7 +24,7 @@ mean_area_final_divide_initial_plot <- mean_area_final_divide_initial_plot + the
 mean_area_final_divide_initial_plot
 
 #####################
-# Preliminary anova #
+# anova             #
 # Three-way         #
 #####################
 area_final_divide_initial_anova <- aov(final_divide_initial ~ species*nitrogen*phosphorus, data=data)
@@ -326,7 +326,7 @@ qqnorm(resid(area_final_divide_initialHM_anova)) # QQ plot
 qqline(resid(area_final_divide_initialHM_anova)) 
 
 # null hypothesis = sample came from a normally distributed population 
-shapiro.test(resid(area_final_divide_initialHM_anova)) # p-value =  0.1918
+shapiro.test(resid(area_final_divide_initialHM_anova)) # p-value =  0.567
 
 # bartlett test: homogeneity of variance
 # null hypothesis: equal variance 
