@@ -37,7 +37,7 @@ labeller_function <- function(variable,value){
 mean_avgRGR_plot <- ggplot(summary_data_avgRGRII, aes(x=species,y=avgRGR)) + geom_point() 
 mean_avgRGR_plot <- mean_avgRGR_plot + geom_errorbar(aes(ymin=avgRGR-se, ymax=avgRGR+se), width=0.1)
 mean_avgRGR_plot <- mean_avgRGR_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
-mean_avgRGR_plot <- mean_avgRGR_plot + ylab("Average Relative Growth Rate")
+mean_avgRGR_plot <- mean_avgRGR_plot + ylab(expression(paste("Average Relative Growth Rate (", mm^2,"/",mm^-2,"/",day^-1,")",sep="")))
 mean_avgRGR_plot <- mean_avgRGR_plot + xlab("Species")
 #mean_avgRGR_plot <- mean_avgRGR_plot + ylim(0,0.4)
 mean_avgRGR_plot <- mean_avgRGR_plot + theme_bw(base_size=18)

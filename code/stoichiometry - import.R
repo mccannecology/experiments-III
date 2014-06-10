@@ -20,6 +20,11 @@ data$final_divide_initial <- data$area17/data$area0
 class(data$nitrogen)
 class(data$phosphorus)
 
+
+# import turion data 
+data_turions <- read.csv("stoichiometry_turions.csv")
+head(data_turions)
+
 ############################# 
 # reshape data              #
 # area data                 #
@@ -205,4 +210,26 @@ colnames(summary_data_avgRGR)[5] <- "avgRGR"
 summary_data_avgRGR$nitrogen <- factor(summary_data_avgRGR$nitrogen , levels=c("lowN","medN","highN"))
 summary_data_avgRGR$phosphorus <- factor(summary_data_avgRGR$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_avgRGR)
+
+#######################
+# Mean totbottom      #
+# by treatment combo  #
+# Use for plotting    #
+# excludes reps. that #
+# were replaced       #
+#######################
+summary_data_turions <- ddply(subset(data_turions, data_turions$replaced=="No"), 
+                              c("species","nitrogen","phosphorus"), 
+                              summarise, 
+                              N = length(totbottom),
+                              mean = mean(totbottom),
+                              sd = sd(totbottom),
+                              se = sd / sqrt(N) )
+
+colnames(summary_data_turions)[5] <- "totbottom"
+
+# re-order my treatments so they go from low to high
+summary_data_turions$nitrogen <- factor(summary_data_turions$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_turions$phosphorus <- factor(summary_data_turions$phosphorus , levels=c("lowP","medP","highP"))
+head(summary_data_turions)
 

@@ -37,7 +37,7 @@ labeller_function <- function(variable,value){
 mean_maxRGR_plot <- ggplot(summary_data_maxRGRII, aes(x=species,y=maxRGR)) + geom_point() 
 mean_maxRGR_plot <- mean_maxRGR_plot + geom_errorbar(aes(ymin=maxRGR-se, ymax=maxRGR+se), width=0.1)
 mean_maxRGR_plot <- mean_maxRGR_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
-mean_maxRGR_plot <- mean_maxRGR_plot + ylab("Maximum Relative Growth Rate")
+mean_maxRGR_plot <- mean_maxRGR_plot + ylab(expression(paste("Maximum Relative Growth Rate (", mm^2,"/",mm^-2,"/",day^-1,")",sep="")))
 mean_maxRGR_plot <- mean_maxRGR_plot + xlab("Species")
 mean_maxRGR_plot <- mean_maxRGR_plot + ylim(0,0.4)
 mean_maxRGR_plot <- mean_maxRGR_plot + theme_bw(base_size=18)
