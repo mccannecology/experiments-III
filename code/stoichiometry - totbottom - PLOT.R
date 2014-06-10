@@ -71,7 +71,7 @@ mean_totbottom_WB_plot <- mean_totbottom_WB_plot + geom_errorbar(aes(ymin=totbot
 mean_totbottom_WB_plot <- mean_totbottom_WB_plot + facet_grid(nitrogen ~ phosphorus)
 mean_totbottom_WB_plot <- mean_totbottom_WB_plot + ylab("Total turions produced per replicate")
 mean_totbottom_WB_plot <- mean_totbottom_WB_plot + theme_bw(base_size=18)
-mean_totbottom_SP_plot <- mean_totbottom_SP_plot + ggtitle("W. brasiliensis")
+mean_totbottom_WB_plot <- mean_totbottom_WB_plot + ggtitle("W. brasiliensis")
 mean_totbottom_WB_plot 
 
 ggsave(filename = "mean_totbottom_WB_plot.jpg", mean_totbottom_WB_plot, height=11, width=11)
@@ -95,6 +95,42 @@ mean_totbottom_SP_plot
 ggsave(filename = "mean_totbottom_SP_plot.jpg", mean_totbottom_SP_plot, height=11, width=11)
 
 
+
+
+###################
+# turions_per_day #
+# Average         #
+# wolffia         #
+###################
+# excluding replicates that were replcated during the experiment 
+mean_turions_per_day_WB_plot <- ggplot(subset(summary_data_turions_per_day, summary_data_turions_per_day$species=="WB"), aes(x=species,y=turions_per_day)) 
+mean_turions_per_day_WB_plot <- mean_turions_per_day_WB_plot + geom_point() 
+mean_turions_per_day_WB_plot <- mean_turions_per_day_WB_plot + geom_errorbar(aes(ymin=turions_per_day-se, ymax=turions_per_day+se), width=0.1)
+mean_turions_per_day_WB_plot <- mean_turions_per_day_WB_plot + facet_grid(nitrogen ~ phosphorus)
+mean_turions_per_day_WB_plot <- mean_turions_per_day_WB_plot + ylab("Turions per day")
+mean_turions_per_day_WB_plot <- mean_turions_per_day_WB_plot + theme_bw(base_size=18)
+mean_turions_per_day_WB_plot <- mean_turions_per_day_WB_plot + ggtitle("W. brasiliensis")
+mean_turions_per_day_WB_plot 
+
+ggsave(filename = "mean_turions_per_day_WB_plot.jpg", mean_turions_per_day_WB_plot, height=11, width=11)
+
+
+###################
+# turions_per_day #
+# Average         #
+# spirodela       #
+###################
+# excluding replicates that were replcated during the experiment 
+mean_turions_per_day_SP_plot <- ggplot(subset(summary_data_turions_per_day, summary_data_turions_per_day$species=="SP"), aes(x=species,y=turions_per_day)) 
+mean_turions_per_day_SP_plot <- mean_turions_per_day_SP_plot + geom_point() 
+mean_turions_per_day_SP_plot <- mean_turions_per_day_SP_plot + geom_errorbar(aes(ymin=turions_per_day-se, ymax=turions_per_day+se), width=0.1)
+mean_turions_per_day_SP_plot <- mean_turions_per_day_SP_plot + facet_grid(nitrogen ~ phosphorus)
+mean_turions_per_day_SP_plot <- mean_turions_per_day_SP_plot + ylab("Turions per day")
+mean_turions_per_day_SP_plot <- mean_turions_per_day_SP_plot + theme_bw(base_size=18)
+mean_turions_per_day_SP_plot <- mean_turions_per_day_SP_plot + ggtitle("S. polyrhiza")
+mean_turions_per_day_SP_plot 
+
+ggsave(filename = "mean_turions_per_day_SP_plot.jpg", mean_turions_per_day_SP_plot, height=11, width=11)
 
 
 

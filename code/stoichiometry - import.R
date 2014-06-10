@@ -20,10 +20,12 @@ data$final_divide_initial <- data$area17/data$area0
 class(data$nitrogen)
 class(data$phosphorus)
 
-
 # import turion data 
 data_turions <- read.csv("stoichiometry_turions.csv")
 head(data_turions)
+
+# add turions per day 
+data_turions$turions_per_day <- data_turions$totbottom / 17
 
 ############################# 
 # reshape data              #
@@ -233,3 +235,25 @@ summary_data_turions$nitrogen <- factor(summary_data_turions$nitrogen , levels=c
 summary_data_turions$phosphorus <- factor(summary_data_turions$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_turions)
 
+#######################
+# Mean totbottom      #
+# by treatment combo  #
+# Use for plotting    #
+# excludes reps. that #
+# were replaced       #
+#######################
+summary_data_turions_per_day <- ddply(subset(data_turions, data_turions$replaced=="No"), 
+                                      c("species","nitrogen","phosphorus"), 
+                                      summarise, 
+                                      N = length(turions_per_day),
+                                      mean = mean(turions_per_day),
+                                      sd = sd(turions_per_day),
+                                      se = sd / sqrt(N) )
+
+colnames(summary_data_turions_per_day)[5] <- "turions_per_day"
+
+# re-order my treatments so they go from low to high
+summary_data_turions_per_day$nitrogen <- factor(summary_data_turions_per_day$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_turions_per_day$phosphorus <- factor(summary_data_turions_per_day$phosphorus , levels=c("lowP","medP","highP"))
+head(summary_data_turions)
+summary_data_turions_per_day
