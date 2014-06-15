@@ -9,6 +9,228 @@
 head(data_turions)
 head(summary_data_turions)
 
+# WB & SP only    
+# remove replicates that were replaced 
+data_turions_WBSP <- subset(data_turions, data_turions$species!="LM")
+data_turions_WBSP <- subset(data_turions_WBSP, data_turions_WBSP$replaced=="No")
+data_turions_WBSP
+
+
+# I probably shouldn't use a SP and WB in the same ANOVA 
+# Turion production for SP is 0 in 5 of 9 treatment levels 
+
+###############################
+# anova                       #
+# Y = turion_area_per_day     #
+# Treatments:                 #
+# nitrogen                    #
+# phosphorus                  #
+# species                     #
+# (NO LM, replaced removed)   #
+###############################
+anova_turion_area_per_day <- aov(turion_area_per_day ~ nitrogen*phosphorus*species, data=data_turions_WBSP)
+summary(anova_turion_area_per_day)
+posthoc_anova_turion_area_per_day <- TukeyHSD(anova_turion_area_per_day)
+posthoc_anova_turion_area_per_day
+
+# Examine residuals 
+
+# plot a histogram 
+hist(resid(anova_turion_area_per_day))
+
+# QQ plot 
+# Does not look very normal 
+qqnorm(resid(anova_turion_area_per_day)) 
+qqline(resid(anova_turion_area_per_day)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(anova_turion_area_per_day)) # p-value = 6.055e-08
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ nitrogen*phosphorus*species,data=data_turions_WBSP) # p-value = 2.766e-06
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ nitrogen*phosphorus*species,data=data_turions_WBSP) # p-value = 0.0001461
+
+##############################
+# try a power transformation #
+##############################
+data_turions_WBSP$turion_area_per_day <- data_turions_WBSP$turion_area_per_day+0.001
+
+# figure out the best power transformation 
+library(car)
+powerTransform(turion_area_per_day ~ nitrogen*phosphorus*species, data=data_turions_WBSP)
+power <- 0.1089096
+
+# add the power transformation of stand
+data_turions_WBSP$power_turion_area_per_day <- ((data_turions_WBSP$turion_area_per_day)^power - 1) / power 
+
+anova_power_turion_area_per_day <- aov(power_turion_area_per_day ~ nitrogen*phosphorus*species, data=data_turions_WBSP)
+summary(anova_power_turion_area_per_day)
+posthoc_anova_power_turion_area_per_day <- TukeyHSD(anova_power_turion_area_per_day)
+posthoc_anova_power_turion_area_per_day
+
+# Examine residuals 
+# plot a histogram 
+hist(resid(anova_power_turion_area_per_day))
+
+# QQ plot 
+# Does not look very normal 
+qqnorm(resid(anova_power_turion_area_per_day)) 
+qqline(resid(anova_power_turion_area_per_day)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(anova_power_turion_area_per_day)) # p-value = 7.73e-05
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(power_turion_area_per_day ~ nitrogen*phosphorus*species, data=data_turions_WBSP) # p-value = 0.2827
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(power_turion_area_per_day ~ nitrogen*phosphorus*species, data=data_turions_WBSP) # p-value = 0.003177
+
+
+
+###############################
+# anova                       #
+# WOLFFIA only                #
+# Y = turion_area_per_day     #
+# Treatments:                 #
+# nitrogen                    #
+# phosphorus                  #
+###############################
+# Wolffia only    
+# remove replicates that were replaced 
+data_turions_WB <- subset(data_turions, data_turions$species=="WB")
+data_turions_WB <- subset(data_turions_WB, data_turions_WB$replaced=="No")
+data_turions_WB
+
+turion_area_per_day_anova_WB <- aov(turion_area_per_day ~ nitrogen*phosphorus, data=data_turions_WB)
+summary(turion_area_per_day_anova_WB)
+posthoc_turion_area_per_day_anova_WB <- TukeyHSD(turion_area_per_day_anova_WB)
+posthoc_turion_area_per_day_anova_WB
+
+#####################
+# Examine residuals #
+#####################
+# plot a histogram 
+# looks normal-ish
+hist(resid(turion_area_per_day_anova_WB))
+
+# QQ plot 
+# Does not look very normal 
+qqnorm(resid(turion_area_per_day_anova_WB)) 
+qqline(resid(turion_area_per_day_anova_WB)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(turion_area_per_day_anova_WB)) # p-value 0.04363
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ nitrogen * phosphorus,data=data_turions_WB) # p-value = 0.0003025
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ nitrogen * phosphorus,data=data_turions_WB) # p-value = 0.03296
+
+##############################
+# try a power transformation #
+##############################
+data_turions_WB$turion_area_per_day <- data_turions_WB$turion_area_per_day+0.001
+
+# figure out the best power transformation 
+library(car)
+powerTransform(turion_area_per_day ~ nitrogen*phosphorus, data=data_turions_WB)
+power <- 0.4567131 
+
+# add the power transformation of stand
+data_turions_WB$power_turion_area_per_day <- ((data_turions_WB$turion_area_per_day)^power - 1) / power 
+
+turion_area_per_day_anova_power <- aov(power_turion_area_per_day ~ nitrogen*phosphorus, data=data_turions_WB)
+summary(turion_area_per_day_anova_power)
+posthoc_turion_area_per_day_anova_power <- TukeyHSD(turion_area_per_day_anova_power)
+posthoc_turion_area_per_day_anova_power
+
+# Examine residuals 
+# plot a histogram 
+hist(resid(turion_area_per_day_anova_power))
+
+# QQ plot 
+# Does not look very normal 
+qqnorm(resid(turion_area_per_day_anova_power)) 
+qqline(resid(turion_area_per_day_anova_power)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(turion_area_per_day_anova_power)) # p-value = 0.2418
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(power_turion_area_per_day ~ nitrogen*phosphorus, data=data_turions_WB) # p-value = 0.0001708
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(power_turion_area_per_day ~ nitrogen*phosphorus, data=data_turions_WB) # p-value = 0.1365
+
+
+
+
+
+###############################
+# anova                       #
+# SPIRODELA only              #
+# Y = turion_area_per_day     #
+# Treatments:                 #
+# nitrogen                    #
+# phosphorus                  #
+###############################
+# Spirodela only    
+# remove replicates that were replaced 
+data_turions_SP <- subset(data_turions, data_turions$species=="SP")
+data_turions_SP <- subset(data_turions_SP, data_turions_SP$replaced=="No")
+data_turions_SP
+
+turion_area_per_day_anova_SP <- aov(turion_area_per_day ~ nitrogen*phosphorus, data=data_turions_SP)
+summary(turion_area_per_day_anova_SP)
+posthoc_turion_area_per_day_anova_SP <- TukeyHSD(turion_area_per_day_anova_SP)
+posthoc_turion_area_per_day_anova_SP
+
+#####################
+# Examine residuals #
+#####################
+# plot a histogram 
+# looks normal-ish
+hist(resid(turion_area_per_day_anova_SP))
+
+# QQ plot 
+# Does not look very normal 
+qqnorm(resid(turion_area_per_day_anova_SP)) 
+qqline(resid(turion_area_per_day_anova_SP)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(turion_area_per_day_anova_SP)) # p-value 4.578e-06
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ nitrogen * phosphorus,data=data_turions_SP) # p-value = 0.0003025
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ nitrogen * phosphorus,data=data_turions_SP) # p-value = 0.03296
+
+
+
+
+
+
+
 #####################
 # anova             #
 # WOLFFIA only      #
@@ -173,8 +395,45 @@ m2 <- glm(totbottom ~ interaction, family=poisson, data=data_turions_SP)
 l2 <- glht(m2, linfct = mcp(interaction = "Tukey"))
 summary(l2)
 
+# nitrogen only
+glm_totbottomSP_2 <- glm(totbottom ~ nitrogen, family=poisson, data=data_turions_SP)
+summary(glm_totbottomSP_2)
+AIC(glm_totbottomSP_2)
 
+# phosphorus only
+glm_totbottomSP_3 <- glm(totbottom ~ phosphorus, family=poisson, data=data_turions_SP)
+summary(glm_totbottomSP_3)
+AIC(glm_totbottomSP_3)
 
+##############
+# SPIRODELA  #
+# totbottom  #
+# GLM        #
+# Poisson    #
+##############
+# nitrogen * phosphorus 
+glm_totbottomSP_1 <- glm(totbottom ~ nitrogen * phosphorus, family=poisson, data=data_turions_SP)
+summary(glm_totbottomSP_1)
+AIC(glm_totbottomSP_1)
+
+# Check the significance of the residual deviance 
+1-pchisq(24.509,36) # p = 0.9267574
+
+# Output like an ANOVA table
+anova(glm_totbottomSP_1, test="Chisq") 
+
+# Tukey's HSD - comparison of treatment means 
+library(multcomp)
+# compare populations, temperatures  
+summary(glht(glm_totbottomSP_1, mcp(nitrogen="Tukey",phosphorus="Tukey")))
+
+# http://www.ats.ucla.edu/stat/r/faq/testing_contrasts.htm
+# all pairwise comparsions
+# creating a BIG group variable
+data_turions_SP$interaction <- with(data_turions_SP, interaction(data_turions_SP$nitrogen, data_turions_SP$phosphorus, sep = "x"))
+m2 <- glm(totbottom ~ interaction, family=poisson, data=data_turions_SP)
+l2 <- glht(m2, linfct = mcp(interaction = "Tukey"))
+summary(l2)
 
 # nitrogen only
 glm_totbottomSP_2 <- glm(totbottom ~ nitrogen, family=poisson, data=data_turions_SP)
@@ -185,3 +444,4 @@ AIC(glm_totbottomSP_2)
 glm_totbottomSP_3 <- glm(totbottom ~ phosphorus, family=poisson, data=data_turions_SP)
 summary(glm_totbottomSP_3)
 AIC(glm_totbottomSP_3)
+

@@ -26,6 +26,7 @@ head(data_turions)
 
 # add turions per day 
 data_turions$turions_per_day <- data_turions$totbottom / 17
+data_turions$turion_area_per_day <- data_turions$turions_areaTOT / 17
 
 ############################# 
 # reshape data              #
@@ -257,3 +258,29 @@ summary_data_turions_per_day$nitrogen <- factor(summary_data_turions_per_day$nit
 summary_data_turions_per_day$phosphorus <- factor(summary_data_turions_per_day$phosphorus , levels=c("lowP","medP","highP"))
 head(summary_data_turions)
 summary_data_turions_per_day
+
+############################
+# Mean turion area per day #
+# by treatment combo       #
+# Use for plotting         #
+# excludes reps. that      #
+# were replaced            #
+############################
+summary_data_turion_area_per_day <- ddply(subset(data_turions, data_turions$replaced=="No"), 
+                                      c("species","nitrogen","phosphorus"), 
+                                      summarise, 
+                                      N = length(turion_area_per_day),
+                                      mean = mean(turion_area_per_day),
+                                      sd = sd(turion_area_per_day),
+                                      se = sd / sqrt(N) )
+
+colnames(summary_data_turion_area_per_day)[5] <- "turion_area_per_day"
+
+# re-order my treatments so they go from low to high
+summary_data_turion_area_per_day$nitrogen <- factor(summary_data_turion_area_per_day$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_turion_area_per_day$phosphorus <- factor(summary_data_turion_area_per_day$phosphorus , levels=c("lowP","medP","highP"))
+head(summary_data_turion_area_per_day)
+
+# remove Lemna minor (did not make any turions)
+summary_data_turion_area_per_day <- subset(summary_data_turion_area_per_day, summary_data_turion_area_per_day$species != "LM")
+summary_data_turion_area_per_day
