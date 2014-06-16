@@ -282,5 +282,5 @@ summary_data_turion_area_per_day$phosphorus <- factor(summary_data_turion_area_p
 head(summary_data_turion_area_per_day)
 
 # remove Lemna minor (did not make any turions)
-summary_data_turion_area_per_day <- subset(summary_data_turion_area_per_day, summary_data_turion_area_per_day$species != "LM")
-summary_data_turion_area_per_day
+#summary_data_turion_area_per_day <- subset(summary_data_turion_area_per_day, summary_data_turion_area_per_day$species != "LM")
+#summary_data_turion_area_per_day

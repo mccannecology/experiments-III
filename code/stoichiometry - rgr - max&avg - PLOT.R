@@ -24,31 +24,15 @@ colnames(summary_data_avgRGR)[5] <- "RGRvalue"
 # combine into a single data frame 
 summary_data_RGR <- rbind(summary_data_maxRGR,summary_data_avgRGR)
 
-<<<<<<< HEAD
-=======
-############
-# maxRGR   #
-# Average  #
-############
-summary_data_maxRGRII <- read.csv("maxRGR_posthoc.csv")
-summary_data_maxRGRII$nitrogen <- factor(summary_data_maxRGRII$nitrogen , levels=c("lowN","medN","highN"))
-summary_data_maxRGRII$phosphorus <- factor(summary_data_maxRGRII$phosphorus , levels=c("lowP","medP","highP"))
-
-combo_RGR_plot <- combo_RGR_plot + geom_text(data=summary_data_maxRGRII,aes(x=species, y=maxRGR+se+0.025,label=label))
->>>>>>> 5a7d94b318d8381fe7fd38e5737b1422b6c8f5ef
-
 ############
 # RGR      #
 # both max #
 # and avg  #
 ############
-<<<<<<< HEAD
 summary_data_RGRII <- read.csv("comboRGR_posthoc.csv")
 summary_data_RGRII$nitrogen <- factor(summary_data_RGRII$nitrogen , levels=c("lowN","medN","highN"))
 summary_data_RGRII$phosphorus <- factor(summary_data_RGRII$phosphorus , levels=c("lowP","medP","highP"))
 
-=======
->>>>>>> 5a7d94b318d8381fe7fd38e5737b1422b6c8f5ef
 # labelling the facet variables
 nitrogen_names <- list("lowN"="0.5 mg N/L","medN"="5 mg N/L","highN"="10 mg N/L")
 phosphorus_names <- list("lowP"="0.08 mg P/L","medP"="0.8 mg P/L","highP"="1.6 mg P/L")
@@ -62,22 +46,15 @@ labeller_function <- function(variable,value){
 }
 
 # making the plot 
-<<<<<<< HEAD
 combo_RGR_plot <- ggplot(summary_data_RGRII, aes(x=species,y=RGRvalue,group=RGR)) 
-=======
-combo_RGR_plot <- ggplot(summary_data_RGR, aes(x=species,y=RGRvalue,group=RGR)) 
->>>>>>> 5a7d94b318d8381fe7fd38e5737b1422b6c8f5ef
 combo_RGR_plot <- combo_RGR_plot + geom_point(aes(shape=RGR),size=3) 
 combo_RGR_plot <- combo_RGR_plot + scale_shape_manual(values=c(1,16))
 combo_RGR_plot <- combo_RGR_plot + geom_errorbar(aes(ymin=RGRvalue-se, ymax=RGRvalue+se), width=0.1)
 combo_RGR_plot <- combo_RGR_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
 combo_RGR_plot <- combo_RGR_plot + xlab("Species")
-combo_RGR_plot <- combo_RGR_plot + ylab(expression(paste("Relative Growth Rate (", mm^2,"/",mm^-2,"/",day^-1,")",sep="")))
-<<<<<<< HEAD
+combo_RGR_plot <- combo_RGR_plot + ylab(expression(paste("Relative Growth Rate (", mm^2,mm^-2,day^-1,")",sep="")))
 combo_RGR_plot <- combo_RGR_plot + geom_text(data=summary_data_RGRII,aes(x=species, y=RGRvalue+se+0.025,label=label1))
 combo_RGR_plot <- combo_RGR_plot + geom_text(data=summary_data_RGRII,aes(x=species, y=RGRvalue-se-0.025,label=label2))
-=======
->>>>>>> 5a7d94b318d8381fe7fd38e5737b1422b6c8f5ef
 combo_RGR_plot <- combo_RGR_plot + theme_bw(base_size=18)
 combo_RGR_plot 
 

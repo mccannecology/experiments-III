@@ -445,3 +445,52 @@ glm_totbottomSP_3 <- glm(totbottom ~ phosphorus, family=poisson, data=data_turio
 summary(glm_totbottomSP_3)
 AIC(glm_totbottomSP_3)
 
+
+
+
+#######################
+# Logistic regression #
+# GLM                 #
+#                     #
+# Presence of turions #
+#######################
+data_turions$turion_presence[data_turions$totbottom>0] <- 1
+data_turions$turion_presence[data_turions$totbottom==0] <- 0
+data_turions$turion_presence
+
+glm_turions <- glm(turion_presence ~ species * nitrogen * phosphorus, family=binomial, data=data_turions)
+summary(glm_turions)
+AIC(glm_turions)
+
+# Check the significance of the residual deviance 
+1-pchisq(49.684,135) # p = 1
+
+# Output like an ANOVA table4
+anova(glm_turions, test="Chisq") 
+
+# Tukey's HSD - comparison of treatment means 
+library(multcomp)
+# compare populations, temperatures  
+summary(glht(glm_turions, mcp(species="Tukey",nitrogen="Tukey",phosphorus="Tukey")))
+
+# http://www.ats.ucla.edu/stat/r/faq/testing_contrasts.htm
+# all pairwise comparsions
+# creating a BIG group variable
+data_turions$interaction <- with(data_turions, interaction(data_turions$species,data_turions$nitrogen, data_turions$phosphorus, sep = "x"))
+m2 <- glm(turion_presence ~ interaction, family=binomial, data=data_turions)
+l2 <- glht(m2, linfct = mcp(interaction = "Tukey"))
+summary(l2)
+
+
+
+
+
+# nitrogen only
+glm_totbottomSP_2 <- glm(totbottom ~ nitrogen, family=poisson, data=data_turions_SP)
+summary(glm_totbottomSP_2)
+AIC(glm_totbottomSP_2)
+
+# phosphorus only
+glm_totbottomSP_3 <- glm(totbottom ~ phosphorus, family=poisson, data=data_turions_SP)
+summary(glm_totbottomSP_3)
+AIC(glm_totbottomSP_3)
