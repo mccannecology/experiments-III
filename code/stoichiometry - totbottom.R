@@ -501,6 +501,20 @@ AIC(glm_turions_4)
 # Check the significance of the residual deviance 
 1-pchisq( 81.792,159) # p = 0.9999999
 
+# likelihood ratio test 
+# http://www.ats.ucla.edu/stat/r/dae/logit.htm
+# difference in deviance for the two models (i.e., the test statistic) 
+with(glm_turions_4, null.deviance - deviance)
+# df for difference between two models 
+with(glm_turions_4, df.null - df.residual)
+# p- value 
+with(glm_turions_4, pchisq(null.deviance - deviance, df.null - df.residual, lower.tail = FALSE))
+
+# http://www.r-bloggers.com/veterinary-epidemiologic-research-glm-evaluating-logistic-regression-models-part-3/
+sum(residuals(glm_turions_4,type="pearson")^2)
+deviance(glm_turions_4)
+1-pchisq(deviance(glm_turions_4),df.residual(glm_turions_4))
+
 # Output like an ANOVA table4
 anova(glm_turions_4, test="Chisq") 
 
