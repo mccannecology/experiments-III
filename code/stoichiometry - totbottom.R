@@ -477,20 +477,163 @@ summary(glht(glm_turions, mcp(species="Tukey",nitrogen="Tukey",phosphorus="Tukey
 # all pairwise comparsions
 # creating a BIG group variable
 data_turions$interaction <- with(data_turions, interaction(data_turions$species,data_turions$nitrogen, data_turions$phosphorus, sep = "x"))
-m2 <- glm(turion_presence ~ interaction, family=binomial, data=data_turions)
+# re-do the glm() with the "interaction" as the predictor 
+m2 <- glm(tuion_presence ~ interaction, family=binomial, data=data_turions)
 l2 <- glht(m2, linfct = mcp(interaction = "Tukey"))
 summary(l2)
 
 
-
-
-
 # nitrogen only
-glm_totbottomSP_2 <- glm(totbottom ~ nitrogen, family=poisson, data=data_turions_SP)
-summary(glm_totbottomSP_2)
-AIC(glm_totbottomSP_2)
+glm_turions_2 <- glm(turion_presence ~ nitrogen, family=binomial, data=data_turions)
+summary(glm_turions_2)
+AIC(glm_turions_2)
 
 # phosphorus only
-glm_totbottomSP_3 <- glm(totbottom ~ phosphorus, family=poisson, data=data_turions_SP)
-summary(glm_totbottomSP_3)
-AIC(glm_totbottomSP_3)
+glm_turions_3 <- glm(turion_presence ~ phosphorus, family=binomial, data=data_turions)
+summary(glm_turions_3)
+AIC(glm_turions_3)
+
+# species only
+glm_turions_4 <- glm(turion_presence ~ species, family=binomial, data=data_turions)
+summary(glm_turions_4)
+AIC(glm_turions_4)
+
+# Check the significance of the residual deviance 
+1-pchisq( 81.792,159) # p = 0.9999999
+
+# Output like an ANOVA table4
+anova(glm_turions_4, test="Chisq") 
+
+# Tukey's HSD - comparison of treatment means 
+library(multcomp)
+# compare populations, temperatures  
+summary(glht(glm_turions_4, mcp(species="Tukey")))
+
+
+#######################
+# Separate t-tests    #
+# at each N*P level   #
+# were SP&WB > 0      #
+#                     #
+# turion_area_per_day #
+#######################
+
+#########################
+# Dunn-Sidak correction #
+# adjusted critical p   #
+#########################
+# four comparions 
+1-(1-0.05)^(1/4)
+# 0.01274146
+
+###############
+# Low N Med P #
+###############
+anova_turions_LM <- aov(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="medP"))
+summary(anova_turions_LM)
+
+# examine the residuals 
+hist(resid(anova_turions_LM))
+
+# QQ plot of residuals
+qqnorm(resid(anova_turions_LM)) 
+qqline(resid(anova_turions_LM)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(anova_turions_LM)) # p-value = 0.4951
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="medP")) #p=0.6724
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="medP")) #p=0.7542
+
+# Alternatively, I can use a Wilcoxon, signed rank test 
+wilcox.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="medP")) #p=0.007408
+
+################
+# Low N High P #
+################
+anova_turions_LH <- aov(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="highP"))
+summary(anova_turions_LH)
+
+# examine the residuals 
+hist(resid(anova_turions_LH))
+
+# QQ plot of residuals
+qqnorm(resid(anova_turions_LH)) 
+qqline(resid(anova_turions_LH)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(anova_turions_LH)) # p-value = 0.06798
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="highP")) #p=0.6671
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="highP")) #p=0.4559
+
+# Alternatively, I can use a Wilcoxon, signed rank test 
+wilcox.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="lowN" & data_turions_WBSP$phosphorus=="highP")) #p=0.004267
+
+###############
+# Med N Low P #
+###############
+anova_turions_ML <- aov(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="medN" & data_turions_WBSP$phosphorus=="lowP"))
+summary(anova_turions_ML)
+
+# examine the residuals 
+hist(resid(anova_turions_ML))
+
+# QQ plot of residuals
+qqnorm(resid(anova_turions_ML)) 
+qqline(resid(anova_turions_ML)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(anova_turions_ML)) # p-value = 0.148
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="medN" & data_turions_WBSP$phosphorus=="lowP")) # p=0.06186
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="medN" & data_turions_WBSP$phosphorus=="lowP")) #p=0.1851
+
+# Alternatively, I can use a Wilcoxon, signed rank test 
+wilcox.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="medN" & data_turions_WBSP$phosphorus=="lowP")) #p=0.004337
+
+################
+# High N Low P # 
+################
+anova_turions_HL <- aov(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="highN" & data_turions_WBSP$phosphorus=="lowP"))
+summary(anova_turions_HL)
+
+# examine the residuals 
+hist(resid(anova_turions_HL))
+
+# QQ plot of residuals
+qqnorm(resid(anova_turions_HL)) 
+qqline(resid(anova_turions_HL)) 
+
+# null hypothesis = sample came from a normally distributed population 
+shapiro.test(resid(anova_turions_HL)) # p-value = 0.3946
+
+# Bartlett Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+bartlett.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="highN" & data_turions_WBSP$phosphorus=="lowP")) # p=0.06082
+
+# Levene's Test of Homogeneity of Variances
+# null hypothesis = population variances are equal
+library(car)
+leveneTest(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="highN" & data_turions_WBSP$phosphorus=="lowP")) #p=0.2326
+
+# Alternatively, I can use a Wilcoxon, signed rank test 
+wilcox.test(turion_area_per_day ~ species, data=subset(data_turions_WBSP, data_turions_WBSP$nitrogen=="highN" & data_turions_WBSP$phosphorus=="lowP")) #p=0.1081
