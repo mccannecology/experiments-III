@@ -139,9 +139,13 @@ ggsave(filename = "mean_turions_per_day_SP_plot.jpg", mean_turions_per_day_SP_pl
 #######################
 # turion_area_per_day #
 # Average             #
-# SP & WB             #
+# All species         #
 #######################
 # excluding replicates that were replcated during the experiment 
+
+summary_data_turion_area_per_day <- read.csv("summary_data_turion_area_per_day_posthoc.csv")
+summary_data_turion_area_per_day$nitrogen <- factor(summary_data_turion_area_per_day$nitrogen , levels=c("lowN","medN","highN"))
+summary_data_turion_area_per_day$phosphorus <- factor(summary_data_turion_area_per_day$phosphorus , levels=c("lowP","medP","highP"))
 
 # labelling the facet variables
 nitrogen_names <- list("lowN"="0.5 mg N/L","medN"="5 mg N/L","highN"="10 mg N/L")
@@ -157,9 +161,11 @@ labeller_function <- function(variable,value){
 
 turion_area_per_day_plot <- ggplot(summary_data_turion_area_per_day, aes(x=species,y=turion_area_per_day)) 
 turion_area_per_day_plot <- turion_area_per_day_plot + geom_point() 
+turion_area_per_day_plot <- turion_area_per_day_plot + ylim(0,1.5)
 turion_area_per_day_plot <- turion_area_per_day_plot + geom_errorbar(aes(ymin=turion_area_per_day-se, ymax=turion_area_per_day+se), width=0.1)
 turion_area_per_day_plot <- turion_area_per_day_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
-turion_area_per_day_plot <- turion_area_per_day_plot + ylab(expression(paste("Turion area produced (", mm^2,day^-1,") ",sep="")))
+turion_area_per_day_plot <- turion_area_per_day_plot + ylab(expression(paste("Turion production (", mm^2,day^-1,") ",sep="")))
+turion_area_per_day_plot <- turion_area_per_day_plot + geom_text(data=summary_data_turion_area_per_day,aes(x=species, y=turion_area_per_day+se+0.125,label=label))
 turion_area_per_day_plot <- turion_area_per_day_plot + theme_bw(base_size=18)
 turion_area_per_day_plot 
 
