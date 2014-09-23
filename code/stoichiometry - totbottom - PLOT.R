@@ -25,18 +25,19 @@ mean_totbottom_plot <- mean_totbottom_plot + ylab("Total turions produced per re
 mean_totbottom_plot <- mean_totbottom_plot + theme_gray(base_size=18)
 mean_totbottom_plot 
 
-###############
-# totbottom   #
-# Average     #
-# all species # 
-###############
-summary_data_turions <- read.csv("summary_data_turions.csv")
+######################
+# turion production  #
+# area per day       #
+# Average            #
+# all species        # 
+######################
+summary_data_turions <- read.csv("summary_data_turion_area_per_day_posthoc.csv")
 summary_data_turions$nitrogen <- factor(summary_data_turions$nitrogen , levels=c("lowN","medN","highN"))
 summary_data_turions$phosphorus <- factor(summary_data_turions$phosphorus , levels=c("lowP","medP","highP"))
 
 # labelling the facet variables
-nitrogen_names <- list("lowN"="Low nitrogen","medN"="Medium nitrogen","highN"="High nitrogen")
-phosphorus_names <- list("lowP"="Low phosphorus","medP"="Medium phosphorus","highP"="High phosphorus")
+nitrogen_names <- list("lowN"="0.5 mg N/L","medN"="5 mg N/L","highN"="10 mg N/L")
+phosphorus_names <- list("lowP"="0.08 mg P/L","medP"="0.8 mg P/L","highP"="1.6 mg P/L")
 
 labeller_function <- function(variable,value){
   if (variable=="phosphorus") {
@@ -47,17 +48,18 @@ labeller_function <- function(variable,value){
 }
 
 # making the plot 
-mean_totbottom_plot <- ggplot(summary_data_turions, aes(x=species,y=totbottom)) + geom_point() 
-mean_totbottom_plot <- mean_totbottom_plot + geom_errorbar(aes(ymin=totbottom-se, ymax=totbottom+se), width=0.1)
-mean_totbottom_plot <- mean_totbottom_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
-mean_totbottom_plot <- mean_totbottom_plot + ylab("Total turions produced per replicate")
-mean_totbottom_plot <- mean_totbottom_plot + xlab("Species")
-mean_totbottom_plot <- mean_totbottom_plot + theme_bw(base_size=18)
-# mean_totbottom_plot <- mean_totbottom_plot + geom_text(data=summary_data_turions,aes(x=species, y=totbottom+se+0.015,label=label))
-mean_totbottom_plot 
+turion_production_plot <- ggplot(summary_data_turions, aes(x=species,y=turion_area_per_day)) + geom_point(size=3) 
+turion_production_plot <- turion_production_plot + geom_errorbar(aes(ymin=turion_area_per_day-se, ymax=turion_area_per_day+se), width=0.1)
+turion_production_plot <- turion_production_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
+turion_production_plot <- turion_production_plot + ylab(expression(paste("Turion production (", mm^2,day^-1,")",sep="")))
+turion_production_plot <- turion_production_plot + xlab("Species")
+turion_production_plot <- turion_production_plot + theme_bw(base_size=18)
+turion_production_plot <- turion_production_plot + geom_hline(aes(intercept=0),linetype="dashed")
+turion_production_plot <- turion_production_plot + geom_text(data=summary_data_turions,aes(x=species, y=turion_area_per_day+se+0.15,label=label))
+turion_production_plot 
 
 # save it 
-ggsave(filename = "mean_totbottom_plot.jpg", mean_totbottom_plot, height=11, width=11)
+ggsave(filename = "turion_production_plot.jpg", turion_production_plot, height=11, width=11)
 
 
 ###############

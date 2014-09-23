@@ -53,6 +53,7 @@ combo_RGR_plot <- combo_RGR_plot + geom_errorbar(aes(ymin=RGRvalue-se, ymax=RGRv
 combo_RGR_plot <- combo_RGR_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
 combo_RGR_plot <- combo_RGR_plot + xlab("Species")
 combo_RGR_plot <- combo_RGR_plot + ylab(expression(paste("Relative growth rate (", mm^2,mm^-2,day^-1,")",sep="")))
+combo_RGR_plot <- combo_RGR_plot + geom_hline(aes(intercept=0),linetype="dashed")
 combo_RGR_plot <- combo_RGR_plot + geom_text(data=summary_data_RGRII,aes(x=species, y=RGRvalue+se+0.025,label=label1))
 combo_RGR_plot <- combo_RGR_plot + geom_text(data=summary_data_RGRII,aes(x=species, y=RGRvalue-se-0.025,label=label2))
 combo_RGR_plot <- combo_RGR_plot + theme_bw(base_size=18)
