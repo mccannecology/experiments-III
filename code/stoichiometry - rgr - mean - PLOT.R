@@ -41,11 +41,12 @@ mean_avgRGR_plot <- mean_avgRGR_plot + ylab(expression(paste("Average Relative G
 mean_avgRGR_plot <- mean_avgRGR_plot + xlab("Species")
 #mean_avgRGR_plot <- mean_avgRGR_plot + ylim(0,0.4)
 mean_avgRGR_plot <- mean_avgRGR_plot + theme_bw(base_size=18)
+mean_avgRGR_plot <- mean_avgRGR_plot + geom_hline(aes(intercept=0),linetype="dashed")
 mean_avgRGR_plot <- mean_avgRGR_plot + geom_text(data=summary_data_avgRGRII,aes(x=species, y=avgRGR+se+0.015,label=label))
 mean_avgRGR_plot 
 
 # save it 
-ggsave(filename = "mean_avgRGR_plot.jpg", mean_avgRGR_plot, height=11, width=11)
+ggsave(filename = "mean_avgRGR_plot.jpg", mean_avgRGR_plot, height=8)
 
 ############
 # avgRGR   #

@@ -55,11 +55,11 @@ turion_production_plot <- turion_production_plot + ylab(expression(paste("Turion
 turion_production_plot <- turion_production_plot + xlab("Species")
 turion_production_plot <- turion_production_plot + theme_bw(base_size=18)
 turion_production_plot <- turion_production_plot + geom_hline(aes(intercept=0),linetype="dashed")
-turion_production_plot <- turion_production_plot + geom_text(data=summary_data_turions,aes(x=species, y=turion_area_per_day+se+0.15,label=label))
+#turion_production_plot <- turion_production_plot + geom_text(data=summary_data_turions,aes(x=species, y=turion_area_per_day+se+0.15,label=label))
 turion_production_plot 
 
 # save it 
-ggsave(filename = "turion_production_plot.jpg", turion_production_plot, height=11, width=11)
+ggsave(filename = "turion_production_plot.jpg", turion_production_plot, height=8)
 
 
 ###############
@@ -173,4 +173,19 @@ turion_area_per_day_plot
 
 ggsave(filename = "turion_area_per_day_plot.jpg", turion_area_per_day_plot, height=11, width=11)
 
+
+# re-making the plot for Hydrobiologia
+turion_area_per_day_plot <- ggplot(summary_data_turion_area_per_day, aes(x=species,y=turion_area_per_day)) 
+turion_area_per_day_plot <- turion_area_per_day_plot + geom_point() 
+turion_area_per_day_plot <- turion_area_per_day_plot + ylim(0,1.5)
+turion_area_per_day_plot <- turion_area_per_day_plot + geom_errorbar(aes(ymin=turion_area_per_day-se, ymax=turion_area_per_day+se), width=0.1)
+turion_area_per_day_plot <- turion_area_per_day_plot + facet_grid(nitrogen ~ phosphorus, labeller=labeller_function)
+turion_area_per_day_plot <- turion_area_per_day_plot + ylab(expression(paste("Turion production (", mm^2,day^-1,") ",sep="")))
+turion_area_per_day_plot <- turion_area_per_day_plot + xlab("Species")
+turion_area_per_day_plot <- turion_area_per_day_plot + geom_text(data=summary_data_turion_area_per_day,aes(x=species, y=turion_area_per_day+se+0.125,label=label))
+turion_area_per_day_plot <- turion_area_per_day_plot + theme_bw(base_size=12)
+turion_area_per_day_plot 
+
+ggsave(filename = "Fig04-turion_area_per_day_plot.jpg", turion_area_per_day_plot, dpi=300, units="mm", width=174)
+ggsave(filename = "Fig04-turion_area_per_day_plot.eps", turion_area_per_day_plot, dpi=300, units="mm", width=174)
 
