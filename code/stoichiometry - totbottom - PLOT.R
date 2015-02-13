@@ -55,19 +55,11 @@ turion_production_plot <- turion_production_plot + ylab(expression(paste("Turion
 turion_production_plot <- turion_production_plot + xlab("Species")
 turion_production_plot <- turion_production_plot + theme_bw(base_size=18)
 turion_production_plot <- turion_production_plot + geom_hline(aes(intercept=0),linetype="dashed")
-<<<<<<< HEAD
-#turion_production_plot <- turion_production_plot + geom_text(data=summary_data_turions,aes(x=species, y=turion_area_per_day+se+0.15,label=label))
-turion_production_plot 
-
-# save it 
-ggsave(filename = "turion_production_plot.jpg", turion_production_plot, height=8)
-=======
 turion_production_plot <- turion_production_plot + geom_text(data=summary_data_turions,aes(x=species, y=turion_area_per_day+se+0.15,label=label))
 turion_production_plot 
 
 # save it 
 ggsave(filename = "turion_production_plot.jpg", turion_production_plot, height=11, width=11)
->>>>>>> 9fc87c6c1b3d602d89b837c73bfde3cfd90ae213
 
 
 ###############
